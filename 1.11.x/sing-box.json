@@ -317,37 +317,37 @@
     {
       "type": "selector",
       "tag": "hk",
-      "outbounds": null
+      "outbounds": []
     },
     {
       "type": "selector",
       "tag": "tw",
-      "outbounds": null
+      "outbounds": []
     },
     {
       "type": "selector",
       "tag": "jp",
-      "outbounds": null
+      "outbounds": []
     },
     {
       "type": "selector",
       "tag": "sg",
-      "outbounds": null
+      "outbounds": []
     },
     {
       "type": "selector",
       "tag": "us",
-      "outbounds": null
+      "outbounds": []
     },
     {
       "type": "selector",
       "tag": "all",
-      "outbounds": null
+      "outbounds": []
     },
     {
       "type": "urltest",
       "tag": "hk-auto",
-      "outbounds": null,
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "1m0s",
       "tolerance": 50
@@ -355,7 +355,7 @@
     {
       "type": "urltest",
       "tag": "tw-auto",
-      "outbounds": null,
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "1m0s",
       "tolerance": 50
@@ -363,7 +363,7 @@
     {
       "type": "urltest",
       "tag": "jp-auto",
-      "outbounds": null,
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "1m0s",
       "tolerance": 50
@@ -371,7 +371,7 @@
     {
       "type": "urltest",
       "tag": "sg-auto",
-      "outbounds": null,
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "1m0s",
       "tolerance": 50
@@ -379,7 +379,7 @@
     {
       "type": "urltest",
       "tag": "us-auto",
-      "outbounds": null,
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "1m0s",
       "tolerance": 50
@@ -387,7 +387,7 @@
     {
       "type": "urltest",
       "tag": "all-auto",
-      "outbounds": null,
+      "outbounds": [],
       "url": "https://www.gstatic.com/generate_204",
       "interval": "1m0s",
       "tolerance": 50
