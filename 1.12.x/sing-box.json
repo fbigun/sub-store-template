@@ -55,6 +55,15 @@
     "final": "google",
     "independent_cache": true
   },
+  "endpoints": [
+    {
+      "type": "tailscale",
+      "tag": "ts-ep",
+      "domain_resolver": "ali",
+      "hostname": "sing-box",
+      "udp_timeout": "5m0s"
+    }
+  ],
   "inbounds": [
     {
       "type": "tun",
@@ -437,6 +446,13 @@
           }
         ],
         "action": "hijack-dns"
+      },
+      {
+        "ip_cidr": [
+          "100.64.0.0/10",
+          "fd7a:115c:a1e0::/48"
+        ],
+        "outbound": "ts-ep"
       },
       {
         "ip_is_private": true,
