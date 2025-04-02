@@ -20,6 +20,11 @@
         "server_port": 0
       },
       {
+        "type": "tailscale",
+        "tag": "ts-dns",
+        "endpoint": "ts-ep"
+      },
+      {
         "type": "fakeip",
         "tag": "fakeip",
         "inet4_range": "198.18.0.0/15",
@@ -27,6 +32,11 @@
       }
     ],
     "rules": [
+      {
+        "domain_suffix": "ts.net",
+        "ip_accept_any": true,
+        "server": "ts-dns"
+      },
       {
         "clash_mode": "Direct",
         "server": "ali"
@@ -59,9 +69,7 @@
     {
       "type": "tailscale",
       "tag": "ts-ep",
-      "domain_resolver": "ali",
-      "hostname": "sing-box",
-      "udp_timeout": "5m0s"
+      "domain_resolver": "ali"
     }
   ],
   "inbounds": [
