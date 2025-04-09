@@ -9,15 +9,12 @@
         "type": "https",
         "tag": "google",
         "detour": "🚀 节点选择",
-        "server": "8.8.8.8",
-        "server_port": 0
+        "server": "8.8.8.8"
       },
       {
         "type": "https",
-        "tag": "ali",
-        "detour": "🎯 全球直连",
-        "server": "223.5.5.5",
-        "server_port": 0
+        "tag": "alidns",
+        "server": "223.5.5.5"
       },
       {
         "type": "tailscale",
@@ -39,7 +36,7 @@
       },
       {
         "clash_mode": "Direct",
-        "server": "ali"
+        "server": "alidns"
       },
       {
         "clash_mode": "Global",
@@ -59,7 +56,7 @@
       },
       {
         "rule_set": "cn_domain",
-        "server": "ali"
+        "server": "alidns"
       }
     ],
     "final": "google",
@@ -69,7 +66,7 @@
     {
       "type": "tailscale",
       "tag": "ts-ep",
-      "domain_resolver": "ali"
+      "domain_resolver": "alidns"
     }
   ],
   "inbounds": [
@@ -471,7 +468,7 @@
     ],
     "final": "🐟 漏网之鱼",
     "auto_detect_interface": true,
-    "default_domain_resolver": "ali"
+    "default_domain_resolver": "alidns"
   },
   "experimental": {
     "cache_file": {
