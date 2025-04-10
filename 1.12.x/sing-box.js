@@ -42,8 +42,8 @@ config.outbounds.forEach(outbound => {
 
 if ($options && $options.hasOwnProperty('hostname')) {
   config.endpoints.forEach(endpoint => {
-    if (endpoint.hostname) {
-      endpoint.hostname = $options.hostname;
+    if (endpoint.type === "tailscale") {
+      endpoint["hostname"] = $options.hostname;
     }
   });
 }
