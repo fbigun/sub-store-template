@@ -59,7 +59,7 @@
         "server": "alidns"
       }
     ],
-    "final": "google",
+    "final": "alidns",
     "independent_cache": true
   },
   "endpoints": [
