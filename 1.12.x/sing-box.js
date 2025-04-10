@@ -40,6 +40,14 @@ config.outbounds.forEach(outbound => {
   }
 });
 
+if ($options && $options.hasOwnProperty('hostname')) {
+  config.endpoints.forEach(endpoint => {
+    if (endpoint.hostname) {
+      endpoint.hostname = $options.hostname;
+    }
+  });
+}
+
 $content = JSON.stringify(config, null, 2)
 
 function getTags(proxies, regex) {
