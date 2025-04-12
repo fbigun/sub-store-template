@@ -47,16 +47,16 @@
         "action": "reject"
       },
       {
+        "rule_set": "cn_domain",
+        "server": "alidns"
+      },
+      {
         "query_type": [
           "A",
           "AAAA"
         ],
         "server": "fakeip",
         "rewrite_ttl": 1
-      },
-      {
-        "rule_set": "cn_domain",
-        "server": "alidns"
       }
     ],
     "final": "alidns",
