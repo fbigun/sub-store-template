@@ -55,6 +55,14 @@
           "A",
           "AAAA"
         ],
+        "rule_set": [
+          "youtube_domain",
+          "telegram_domain",
+          "proxy_domain",
+          "openai_domain",
+          "netflix_domain",
+          "google_domain"
+        ],
         "server": "fakeip",
         "rewrite_ttl": 1
       }
