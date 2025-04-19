@@ -86,7 +86,9 @@
         "fdfe:dcba:9876::/126"
       ],
       "auto_route": true,
-      "stack": "mixed"
+      "stack": "mixed",
+      "auto_redirect": true,
+      "route_exclude_address_set": "cn_ip"
     }
   ],
   "outbounds": [
