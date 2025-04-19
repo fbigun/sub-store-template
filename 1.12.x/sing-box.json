@@ -86,19 +86,7 @@
         "fdfe:dcba:9876::/126"
       ],
       "auto_route": true,
-      "stack": "mixed",
-      "platform": {
-        "http_proxy": {
-          "enabled": true,
-          "server": "127.0.0.1",
-          "server_port": 7890
-        }
-      }
-    },
-    {
-      "type": "mixed",
-      "listen": "127.0.0.1",
-      "listen_port": 7890
+      "stack": "mixed"
     }
   ],
   "outbounds": [
