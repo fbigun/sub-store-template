@@ -19,7 +19,8 @@
       {
         "type": "tailscale",
         "tag": "ts-dns",
-        "endpoint": "ts-ep"
+        "endpoint": "ts-ep",
+        "accept_default_resolvers": true
       },
       {
         "type": "fakeip",
@@ -31,14 +32,12 @@
     "rules": [
       {
         "domain_suffix": "ts.net",
-        "ip_accept_any": true,
         "server": "ts-dns"
       },
       {
         "domain_suffix": [
           "tailscale.com",
-          "tailscale.io",
-          "ts.net"
+          "tailscale.io"
         ],
         "server": "alidns"
       },
