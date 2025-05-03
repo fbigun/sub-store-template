@@ -17,6 +17,12 @@
         "server": "223.5.5.5"
       },
       {
+        "type": "tailscale",
+        "tag": "ts-dns",
+        "endpoint": "ts-ep",
+        "accept_default_resolvers": true
+      },
+      {
         "type": "fakeip",
         "tag": "fakeip",
         "inet4_range": "198.18.0.0/15",
@@ -25,9 +31,15 @@
     ],
     "rules": [
       {
-        "outbound": "any",
-        "server": "alidns",
-        "disable_cache": true
+        "domain_suffix": "ts.net",
+        "server": "ts-dns"
+      },
+      {
+        "domain_suffix": [
+          "tailscale.com",
+          "tailscale.io"
+        ],
+        "server": "alidns"
       },
       {
         "clash_mode": "Direct",
@@ -65,6 +77,13 @@
     "final": "alidns",
     "independent_cache": true
   },
+  "endpoints": [
+    {
+      "type": "tailscale",
+      "tag": "ts-ep",
+      "domain_resolver": "alidns"
+    }
+  ],
   "inbounds": [
     {
       "type": "tun",
@@ -262,6 +281,21 @@
       {
         "protocol": "bittorrent",
         "outbound": "🎯 全球直连"
+      },
+      {
+        "domain_suffix": [
+          "tailscale.com",
+          "tailscale.io",
+          "ts.net"
+        ],
+        "outbound": "🎯 全球直连"
+      },
+      {
+        "ip_cidr": [
+          "100.64.0.0/10",
+          "fd7a:115c:a1e0::/48"
+        ],
+        "outbound": "ts-ep"
       },
       {
         "ip_is_private": true,
