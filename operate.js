@@ -48,6 +48,10 @@ if ($options && $options.hasOwnProperty('hostname')) {
   });
 }
 
+if ($options && $options?.client !== "linux" ) {
+  config.inbounds?.forEach(item => delete item.auto_redirect);
+}
+
 $content = JSON.stringify(config, null, 2)
 
 function getTags(proxies, regex) {
