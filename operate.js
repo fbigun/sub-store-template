@@ -40,16 +40,18 @@ config.outbounds.forEach(outbound => {
   }
 });
 
-if ($options && $options.hasOwnProperty('hostname')) {
-  config.endpoints.forEach(endpoint => {
+if ($options?.hostname && Array.isArray(config?.endpoints)) {
+  for (const endpoint of config.endpoints) {
     if (endpoint.type === "tailscale") {
-      endpoint["hostname"] = $options.hostname;
+      endpoint.hostname = $options.hostname;
     }
-  });
+  }
 }
 
-if ($options && $options?.client !== "linux" ) {
-  config.inbounds?.forEach(item => delete item.auto_redirect);
+if ($options?.client !== "linux" && Array.isArray(config?.inbounds)) {
+  for (const item of config.inbounds) {
+    delete item.auto_redirect;
+  }
 }
 
 $content = JSON.stringify(config, null, 2)
