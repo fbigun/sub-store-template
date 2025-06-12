@@ -7,13 +7,6 @@
     "servers": [
       {
         "type": "https",
-        "tag": "google",
-        "detour": "🚀 节点选择",
-        "domain_resolver": "alidns",
-        "server": "dns.google"
-      },
-      {
-        "type": "https",
         "tag": "alidns",
         "server": "223.5.5.5"
       },
@@ -22,12 +15,6 @@
         "tag": "ts-dns",
         "endpoint": "ts-ep",
         "accept_default_resolvers": true
-      },
-      {
-        "type": "fakeip",
-        "tag": "fakeip",
-        "inet4_range": "198.18.0.0/15",
-        "inet6_range": "fc00::/18"
       }
     ],
     "rules": [
@@ -41,53 +28,9 @@
           "tailscale.io"
         ],
         "server": "alidns"
-      },
-      {
-        "clash_mode": "Direct",
-        "server": "alidns"
-      },
-      {
-        "clash_mode": "Global",
-        "server": "fakeip"
-      },
-      {
-        "query_type": "HTTPS",
-        "action": "reject"
-      },
-      {
-        "rule_set": "ads",
-        "action": "reject"
-      },
-      {
-        "rule_set": [
-          "cn_domain",
-          "fakeip-filter",
-          "private",
-          "trackerslist"
-        ],
-        "server": "alidns"
-      },
-      {
-        "type": "logical",
-        "mode": "or",
-        "rules": [
-          {
-            "rule_set": "proxy"
-          },
-          {
-            "query_type": [
-              "A",
-              "AAAA"
-            ]
-          }
-        ],
-        "server": "fakeip",
-        "rewrite_ttl": 1
       }
     ],
-    "final": "google",
-    "independent_cache": true,
-    "client_subnet": "112.10.101.50"
+    "final": "alidns"
   },
   "endpoints": [
     {
@@ -121,87 +64,8 @@
   ],
   "outbounds": [
     {
-      "type": "selector",
-      "tag": "🚀 节点选择",
-      "outbounds": [
-        "🔯 香港节点",
-        "🔴 日本节点",
-        "✨ 美国节点",
-        "♻️ 自动选择",
-        "🐸 手动切换"
-      ],
-      "default": "♻️ 自动选择"
-    },
-    {
-      "type": "selector",
-      "tag": "🐟 漏网之鱼",
-      "outbounds": [
-        "🎯 全球直连",
-        "🚀 节点选择",
-        "🔯 香港节点",
-        "🔴 日本节点",
-        "✨ 美国节点",
-        "♻️ 自动选择",
-        "🐸 手动切换"
-      ],
-      "default": "🎯 全球直连"
-    },
-    {
-      "type": "selector",
-      "tag": "🐸 手动切换",
-      "outbounds": []
-    },
-    {
-      "type": "urltest",
-      "tag": "♻️ 自动选择",
-      "outbounds": []
-    },
-    {
-      "type": "selector",
-      "tag": "GLOBAL",
-      "outbounds": [
-        "🎯 全球直连",
-        "🚀 节点选择",
-        "🔯 香港节点",
-        "🔴 日本节点",
-        "✨ 美国节点",
-        "♻️ 自动选择",
-        "🐸 手动切换"
-      ],
-      "default": "🚀 节点选择"
-    },
-    {
       "type": "direct",
       "tag": "🎯 全球直连"
-    },
-    {
-      "type": "selector",
-      "tag": "🐼 中国国内",
-      "outbounds": [
-        "🎯 全球直连",
-        "🚀 节点选择",
-        "🔯 香港节点",
-        "🔴 日本节点",
-        "✨ 美国节点",
-        "♻️ 自动选择",
-        "🐸 手动切换"
-      ],
-      "default": "🎯 全球直连"
-    },
-    {
-      "type": "urltest",
-      "tag": "🔯 香港节点",
-      "outbounds": []
-    },
-    {
-      "type": "urltest",
-      "tag": "🔴 日本节点",
-      "outbounds": []
-    },
-    {
-      "type": "urltest",
-      "tag": "✨ 美国节点",
-      "outbounds": []
     }
   ],
   "route": {
@@ -221,10 +85,13 @@
       {
         "domain_suffix": [
           "tailscale.com",
-          "tailscale.io",
-          "ts.net"
+          "tailscale.io"
         ],
         "outbound": "🎯 全球直连"
+      },
+      {
+        "domain_suffix": "ts.net",
+        "outbound": "ts-ep"
       },
       {
         "ip_cidr": [
@@ -238,36 +105,23 @@
         "outbound": "🎯 全球直连"
       },
       {
-        "clash_mode": "Global",
-        "outbound": "GLOBAL"
-      },
-      {
-        "clash_mode": "Direct",
-        "outbound": "🎯 全球直连"
-      },
-      {
         "rule_set": "ads",
         "action": "reject"
       },
       {
         "rule_set": [
           "cn_domain",
-          "fakeip-filter",
           "private",
           "trackerslist"
         ],
         "outbound": "🎯 全球直连"
       },
       {
-        "rule_set": "proxy",
-        "outbound": "🚀 节点选择"
-      },
-      {
         "action": "resolve"
       },
       {
         "rule_set": "cn_ip",
-        "outbound": "🐼 中国国内"
+        "outbound": "🎯 全球直连"
       }
     ],
     "rule_set": [
@@ -294,30 +148,9 @@
       },
       {
         "type": "remote",
-        "tag": "fakeip-filter",
-        "format": "binary",
-        "url": "https://ghfast.top/https://github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/fakeip-filter.srs",
-        "download_detour": "🎯 全球直连"
-      },
-      {
-        "type": "remote",
         "tag": "private",
         "format": "binary",
         "url": "https://ghfast.top/https://github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/private.srs",
-        "download_detour": "🎯 全球直连"
-      },
-      {
-        "type": "remote",
-        "tag": "privateip",
-        "format": "binary",
-        "url": "https://ghfast.top/https://github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/privateip.srs",
-        "download_detour": "🎯 全球直连"
-      },
-      {
-        "type": "remote",
-        "tag": "proxy",
-        "format": "binary",
-        "url": "https://ghfast.top/https://github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/proxy.srs",
         "download_detour": "🎯 全球直连"
       },
       {
@@ -328,15 +161,11 @@
         "download_detour": "🎯 全球直连"
       }
     ],
-    "final": "🐟 漏网之鱼",
+    "final": "🎯 全球直连",
     "auto_detect_interface": true,
     "default_domain_resolver": "alidns"
   },
   "experimental": {
-    "cache_file": {
-      "enabled": true,
-      "store_fakeip": true
-    },
     "clash_api": {
       "external_controller": "0.0.0.0:9090",
       "external_ui": "ui",
