@@ -51,6 +51,18 @@ if (Array.isArray(config?.endpoints)) {
         delete endpoint.hostname;
       }
 
+      // 处理传进来的 exit_node 参数
+      if ($options?.exit_node !== undefined) {
+        endpoint.exit_node = $options.exit_node;
+      } else {
+        delete endpoint.exit_node;
+      }
+
+      // 处理传进来的 advertise_exit_node 参数
+      if (!$options?.advertise_exit_node) {
+        delete endpoint.advertise_exit_node;
+      }
+
       // 处理传进来的 advertise_routes 参数
       const advertiseRoutesArr = $options?.advertise_routes?.trim()
         ? $options.advertise_routes.includes(";")
