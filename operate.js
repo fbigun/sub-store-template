@@ -40,7 +40,7 @@ config.outbounds.forEach(outbound => {
   }
 });
 
-// 处理 **tailscale** endpoints 的 hostname 和 advertise_routes 以及 route rules 处理
+// 处理 **tailscale** endpoints 的 hostname 、exit_node、advertise_exit_node 和 advertise_routes
 if (Array.isArray(config?.endpoints)) {
   for (const endpoint of config.endpoints) {
     if (endpoint.type === "tailscale") {
@@ -56,56 +56,49 @@ if (Array.isArray(config?.endpoints)) {
         endpoint.exit_node = $options.exit_node;
       } else {
         delete endpoint.exit_node;
+        delete endpoint.exit_node_allow_lan_access;
       }
 
-      // 处理传进来的 advertise_exit_node 参数
-      if (!$options?.advertise_exit_node) {
-        delete endpoint.advertise_exit_node;
+      // 处理 advertise_exit_node 参数
+      if ($options?.advertise_exit_node) {
+        endpoint.advertise_exit_node = true;
+      } else {
+        delete endpoint.advertise_exit_node;  // 如果参数未设置或为 false，删除该属性
       }
 
       // 处理传进来的 advertise_routes 参数
-      const advertiseRoutesArr = $options?.advertise_routes?.trim()
-        ? $options.advertise_routes.includes(";")
-          ? $options.advertise_routes.split(";").map(s => s.trim()).filter(Boolean)
-          : [$options.advertise_routes.trim()].filter(Boolean)
-        : [];
-
-      // 处理 route rules
-      if (advertiseRoutesArr.length && Array.isArray(config?.route?.rules)) {
-        for (const rule of config.route.rules) {
-          if (rule.outbound === "ts-ep" && Array.isArray(rule.ip_cidr)) {
-            for (const cidr of advertiseRoutesArr) {
-              if (!rule.ip_cidr.includes(cidr)) {
-                rule.ip_cidr.push(cidr);
-              }
-            }
-          }
-        }
-      }
-      
-      // 处理 advertise_routes
-      if (advertiseRoutesArr.length) {
-        // 如果 advertise_routes 不是数组，则初始化
-        if (!Array.isArray(endpoint.advertise_routes)) {
+      if ($options?.advertise_routes !== undefined) {//
+        const advertiseRoutesArr = $options.advertise_routes.trim()
+          ? $options.advertise_routes.includes(";")
+            ? $options.advertise_routes.split(";").map(s => s.trim()).filter(Boolean)
+            : [$options.advertise_routes.trim()].filter(Boolean)
+          : [];
+        // 如果 advertiseRoutesArr 非空数组，添加到 endpoint.advertise_routes
+        // 如果 endpoint.advertise_routes 已经是数组，直接添加
+        if (!Array.isArray(endpoint.advertise_routes) && advertiseRoutesArr.length !== 0) {
           // 如果是非空字符串，将其作为第一个元素
           const originalRoute = endpoint.advertise_routes;
           endpoint.advertise_routes = [];
-          if (typeof originalRoute === 'string' && originalRoute.trim()) {
+          if (originalRoute) {
             endpoint.advertise_routes.push(originalRoute.trim());
           }
-        }
-        // 添加新的路由
-        for (const cidr of advertiseRoutesArr) {
-          if (!endpoint.advertise_routes.includes(cidr)) {
-            endpoint.advertise_routes.push(cidr);
+        } else if (Array.isArray(endpoint.advertise_routes) && advertiseRoutesArr.length !== 0) {
+          for (const cidr of advertiseRoutesArr) {
+            if (!endpoint.advertise_routes.includes(cidr)) {
+              endpoint.advertise_routes.push(cidr); //
+            }
           }
+        }
+        if (endpoint.advertise_routes.length === 0) {
+          delete endpoint.advertise_routes;
         }
       }
     }
   }
 }
 
-if ($options?.client !== "linux" && Array.isArray(config?.inbounds)) {
+// 处理 inbounds 的 auto_redirect
+if ($options?.client !== "linux" && Array.isArray(config?.inbounds)) { // 如果不是 Linux 客户端，删除 auto_redirect
   for (const item of config.inbounds) {
     delete item.auto_redirect;
   }
