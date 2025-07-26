@@ -13,8 +13,13 @@
       {
         "type": "tailscale",
         "tag": "ts-dns",
-        "endpoint": "ts-ep",
-        "accept_default_resolvers": true
+        "endpoint": "ts-ep"
+      },
+      {
+        "type": "fakeip",
+        "tag": "fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
       }
     ],
     "rules": [
@@ -23,11 +28,46 @@
         "server": "ts-dns"
       },
       {
-        "domain_suffix": [
-          "tailscale.com",
-          "tailscale.io"
+        "clash_mode": "Direct",
+        "server": "alidns"
+      },
+      {
+        "clash_mode": "Global",
+        "server": "fakeip"
+      },
+      {
+        "query_type": "HTTPS",
+        "action": "reject"
+      },
+      {
+        "rule_set": "ads",
+        "action": "reject"
+      },
+      {
+        "rule_set": [
+          "cn_domain",
+          "fakeip-filter",
+          "private",
+          "trackerslist"
         ],
         "server": "alidns"
+      },
+      {
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "rule_set": "proxy"
+          },
+          {
+            "query_type": [
+              "A",
+              "AAAA"
+            ]
+          }
+        ],
+        "server": "fakeip",
+        "rewrite_ttl": 1
       }
     ],
     "final": "alidns"
@@ -36,21 +76,20 @@
     {
       "type": "tailscale",
       "tag": "ts-ep",
-      "domain_resolver": "alidns",
-      "hostname": "",
+      "hostname": "example",
       "accept_routes": true,
-      "exit_node": "",
+      "exit_node": "example",
       "exit_node_allow_lan_access": true,
       "advertise_routes": [
-        "192.168.100.0/24"
+        "192.168.231.0/24"
       ],
-      "advertise_exit_node": true                                                               
+      "advertise_exit_node": true
     }
   ],
   "inbounds": [
     {
       "type": "tun",
-      "interface_name": "ETH",
+      "interface_name": "ETH0",
       "address": [
         "172.19.0.0/30",
         "fdfe:dcba:9876::/126"
@@ -83,13 +122,6 @@
         "outbound": "🎯 全球直连"
       },
       {
-        "domain_suffix": [
-          "tailscale.com",
-          "tailscale.io"
-        ],
-        "outbound": "🎯 全球直连"
-      },
-      {
         "domain_suffix": "ts.net",
         "ip_cidr": [
           "100.64.0.0/10",
@@ -99,7 +131,7 @@
       },
       {
         "ip_is_private": true,
-        "outbound": "🎯 全球直连"
+        "action": "direct"
       },
       {
         "rule_set": "ads",
