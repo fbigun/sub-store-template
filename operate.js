@@ -1,3 +1,58 @@
+/***
+  * @description 处理 sing-box 的配置文件，添加代理节点和处理特定的参数
+  * @author olutyo <olutyo@gmail.com>
+  * @version 1.0.0
+  * @date 2025-07.26
+  * @license MIT
+  * 
+  ** 脚本介绍
+  * @description 该脚本会读取 sing-box 的配置文件，添加代理节点，并处理特定的参数，如 Tailscale 的 hostname、exit_node、
+  * @description advertise_exit_node 和 advertise_routes。它还会处理 inbounds 的 auto_redirect 参数，确保在非 Linux 客户端上删除该参数。
+  * @description 该脚本适用于 sing-box 的配置文件操作，支持多种代理节点的添加和处理。
+  * 
+  ** 主要参数
+  * - [hostname=]         Tailscale 的主机名
+  * - [exit_node=]        启用 Tailscale 的 exit_node 为哪个节点
+  * - [advertise_exit_node]   是否启用 Tailscale 的 advertise_exit_node,只要保留这个参数即可启用
+  * - [advertise_routes]:     Tailscale 的 advertise_routes 路由，多个路由使用分号分隔，如 `"192.168.12.0/24;192.168.15.0/24"`
+  * - [client]            客户端类型，默认为非 Linux 客户端,设置为 "linux" 时保留 auto_redirect 参数
+  * 
+  ** 使用方法
+  * 1. 分享出 Sub-Store 的链接，例如:
+  *    - https://sub-store.example.com/[后端路径]/api/file/latest?$options=
+  *    - https://sub-store.example.com/share/file/stable?token=[分享码]?$options=
+  * 
+  * 2. 在链接中添加补充 `$options=`后的参数，例如:
+  *    例如带类型传参: { arg1: 'a', arg2: 'b' }
+  *    - 先这样处理 encodeURIComponent(JSON.stringify({ arg1: 'a', arg2: 'b' })) , 
+  *      结果为 %7B%22arg1%22%3A%22a%22%2C%22arg2%22%3A%22b%22%7D
+  *    - 组合成链接为 https://sub-store.example.com/[后端路径]/api/file/latest?$options=%7B%22arg1%22%3A%22a%22%2C%22arg2%22%3A%22b%22%7D
+  * 
+  *    或者直接传参：'arg1=a&arg2=b', **此时只能处理成字符类型**
+  *    - 处理 encodeURIComponent('arg1=a&arg2=b'),结果为 arg1%3Da%26arg2%3Db
+  *    - 组合成链接为 https://sub-store.example.com/[后端路径]/api/file/latest?$options=arg1%3Da%26arg2%3Db
+  * 3. 在你的客户端订阅链接即可
+  * 
+  ** $options 其余文档
+  * 默认会带上 _req 字段, 结构为
+  * {
+  *     method,
+  *     url,
+  *     path,
+  *     query,
+  *     params,
+  *     headers,
+  *     body,
+  * }
+  * console.log($options)
+  * 若设置 $options._res.headers
+  * 则会在输出文件时设置响应头, 例如:
+  * $options._res = {
+  *   headers: {
+  *     'X-Custom': '1'
+  *   }
+  * }
+*/
 const { type, name } = $arguments
 const compatible_outbound = {
   tag: 'COMPATIBLE',
