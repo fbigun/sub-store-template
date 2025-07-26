@@ -92,13 +92,13 @@
       "advertise_routes": [
         "192.168.231.0/24"
       ],
-      "advertise_exit_node": true                                                               
+      "advertise_exit_node": true
     }
   ],
   "inbounds": [
     {
       "type": "tun",
-      "interface_name": "ETH",
+      "interface_name": "ETH0",
       "address": [
         "172.19.0.0/30",
         "fdfe:dcba:9876::/126"
@@ -219,7 +219,7 @@
       },
       {
         "ip_is_private": true,
-        "outbound": "🎯 全球直连"
+        "action": "direct"
       },
       {
         "clash_mode": "Global",
@@ -227,7 +227,7 @@
       },
       {
         "clash_mode": "Direct",
-        "outbound": "🎯 全球直连"
+        "action": "direct"
       },
       {
         "rule_set": "ads",
