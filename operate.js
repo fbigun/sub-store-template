@@ -62,23 +62,6 @@ const compatible_outbound = {
 let compatible
 let config = JSON.parse($files[0])
 
-config.outbounds.push(...proxies)
-
-config.outbounds.map(i => {
-  if (['🔯 香港节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /港|hk|hongkong|kong kong|🇭🇰/i))
-  }
-  if (['🔴 日本节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /日本|jp|japan|🇯🇵/i))
-  }
-  if (['✨ 美国节点'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies, /美|us|unitedstates|united states|🇺🇸/i))
-  }
-  if (['♻️ 自动选择', '🐸 手动切换'].includes(i.tag)) {
-    i.outbounds.push(...getTags(proxies))
-  }
-})
-
 config.outbounds.forEach(outbound => {
   if (Array.isArray(outbound.outbounds) && outbound.outbounds.length === 0) {
     if (!compatible) {
