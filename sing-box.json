@@ -19,8 +19,8 @@
       },
       {
         "type": "tailscale",
-        "tag": "ts-dns",
-        "endpoint": "ts-ep"
+        "tag": "taildns",
+        "endpoint": "tailnet"
       },
       {
         "type": "fakeip",
@@ -32,7 +32,7 @@
     "rules": [
       {
         "domain_suffix": "ts.net",
-        "server": "ts-dns"
+        "server": "taildns"
       },
       {
         "clash_mode": "Direct",
@@ -84,15 +84,13 @@
   "endpoints": [
     {
       "type": "tailscale",
-      "tag": "ts-ep",
-      "hostname": "example",
+      "tag": "tailnet",
+      "hostname": "",
       "accept_routes": true,
-      "exit_node": "example",
+      "exit_node": "",
       "exit_node_allow_lan_access": true,
-      "advertise_routes": [
-        "192.168.231.0/24"
-      ],
-      "advertise_exit_node": true
+      "advertise_routes": [],
+      "advertise_exit_node": true                                                               
     }
   ],
   "inbounds": [
@@ -206,16 +204,17 @@
         "action": "hijack-dns"
       },
       {
-        "protocol": "bittorrent",
-        "outbound": "🎯 全球直连"
-      },
-      {
         "domain_suffix": "ts.net",
         "ip_cidr": [
           "100.64.0.0/10",
-          "fd7a:115c:a1e0::/48"
+          "fd7a:115c:a1e0::/48",
+          "192.168.231.0/24"
         ],
-        "outbound": "ts-ep"
+        "outbound": "tailnet"
+      },
+      {
+        "protocol": "bittorrent",
+        "outbound": "🎯 全球直连"
       },
       {
         "ip_is_private": true,
