@@ -122,7 +122,7 @@ if (Array.isArray(config?.endpoints)) {
       }
 
       // 处理传进来的 advertise_routes 参数
-      if ($options?.advertise_routes !== undefined) {//
+      if ($options?.advertise_routes !== undefined) {
         const advertiseRoutesArr = $options.advertise_routes.trim()
           ? $options.advertise_routes.includes(";")
             ? $options.advertise_routes.split(";").map(s => s.trim()).filter(Boolean)
@@ -144,9 +144,10 @@ if (Array.isArray(config?.endpoints)) {
             }
           }
         }
-        if (endpoint.advertise_routes.length === 0) {
-          delete endpoint.advertise_routes;
-        }
+      }
+      // 如果 advertise_routes 为空数组或空字符串，则删除该属性
+      if (endpoint.advertise_routes.length === 0) {
+        delete endpoint.advertise_routes;
       }
     }
   }
