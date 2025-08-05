@@ -42,21 +42,31 @@
         "action": "reject"
       },
       {
-        "rule_set": "cn_domain",
+        "rule_set": "geosite-ads",
+        "action": "reject"
+      },
+      {
+        "rule_set": [
+          "geosite-cn",
+          "geosite-fakeipfilter",
+          "geosite-private",
+          "geosite-trackerslist"
+        ],
         "server": "alidns"
       },
       {
-        "query_type": [
-          "A",
-          "AAAA"
-        ],
-        "rule_set": [
-          "youtube_domain",
-          "telegram_domain",
-          "proxy_domain",
-          "openai_domain",
-          "netflix_domain",
-          "google_domain"
+        "type": "logical",
+        "mode": "or",
+        "rules": [
+          {
+            "rule_set": "geosite-proxy"
+          },
+          {
+            "query_type": [
+              "A",
+              "AAAA"
+            ]
+          }
         ],
         "server": "fakeip",
         "rewrite_ttl": 1
@@ -76,7 +86,7 @@
       "auto_route": true,
       "auto_redirect": true,
       "strict_route": true,
-      "route_exclude_address_set": "cn_ip",
+      "route_exclude_address_set": "geoip-cn",
       "stack": "mixed"
     }
   ],
@@ -273,165 +283,98 @@
       },
       {
         "clash_mode": "Direct",
-        "outbound": "🎯 全球直连"
+        "action": "direct"
+      },
+      {
+        "rule_set": "geosite-ads",
+        "action": "reject"
       },
       {
         "rule_set": [
-          "netflix_ip",
-          "netflix_domain"
+          "geosite-cn",
+          "geosite-fakeipfilter",
+          "geosite-private",
+          "geosite-trackerslist"
         ],
-        "outbound": "🎥 Netflix"
+        "outbound": "🎯 全球直连"
       },
       {
-        "rule_set": "youtube_domain",
-        "outbound": "📹 YouTube"
-      },
-      {
-        "rule_set": "openai_domain",
-        "outbound": "🤖 OpenAI"
-      },
-      {
-        "type": "logical",
-        "mode": "and",
-        "rules": [
-          {
-            "rule_set": "proxy_domain"
-          },
-          {
-            "rule_set": [
-              "cn_domain",
-              "apple_domain",
-              "google_domain",
-              "telegram_domain",
-              "netflix_domain"
-            ],
-            "invert": true
-          }
-        ],
+        "rule_set": "geosite-proxy",
         "outbound": "🚀 节点选择"
       },
       {
         "action": "resolve"
       },
       {
-        "rule_set": [
-          "telegram_ip",
-          "telegram_domain"
-        ],
-        "outbound": "📲 Telegram"
-      },
-      {
-        "rule_set": [
-          "google_ip",
-          "google_domain"
-        ],
-        "outbound": "🍀 Google"
-      },
-      {
-        "rule_set": [
-          "apple_ip",
-          "apple_domain"
-        ],
-        "outbound": "🍎 Apple"
-      },
-      {
-        "rule_set": [
-          "cn_ip",
-          "cn_domain"
-        ],
+        "rule_set": "geoip-cn",
         "outbound": "🐼 中国国内"
       }
     ],
     "rule_set": [
       {
         "type": "remote",
-        "tag": "apple_ip",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/apple.srs",
+        "tag": "geosite-ads",
+        "url": "https://ghfast.top/github.com/TG-Twilight/AWAvenue-Ads-Rule/raw/main/Filters/AWAvenue-Ads-Rule-Singbox.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "apple_domain",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/apple.srs",
+        "tag": "geosite-cn",
+        "url": "https://ghfast.top/github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/cn.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "cn_ip",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geoip/cn.srs",
+        "tag": "geoip-cn",
+        "url": "https://ghfast.top/github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/cnip.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "cn_domain",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/cn.srs",
+        "tag": "geosite-fakeipfilter",
+        "url": "https://ghfast.top/github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/fakeip-filter.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "google_ip",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/google.srs",
+        "tag": "geosite-private",
+        "url": "https://ghfast.top/github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/private.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "google_domain",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/google.srs",
+        "tag": "geoip-private",
+        "url": "https://ghfast.top/github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/privateip.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "netflix_ip",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/netflix.srs",
+        "tag": "geosite-proxy",
+        "url": "https://ghfast.top/github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/proxy.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "netflix_domain",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/netflix.srs",
+        "tag": "geosite-telegram",
+        "url": "https://ghfast.top/github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geosite/telegram.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "openai_domain",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/openai.srs",
+        "tag": "geoip-telegram",
+        "url": "https://ghfast.top/github.com/MetaCubeX/meta-rules-dat/raw/sing/geo/geoip/telegram.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "proxy_domain",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo/geosite/geolocation-!cn.srs",
+        "tag": "geosite-networktest",
+        "url": "https://ghfast.top/github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/networktest.srs",
         "download_detour": "🎯 全球直连"
       },
       {
         "type": "remote",
-        "tag": "telegram_ip",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geoip/telegram.srs",
-        "download_detour": "🎯 全球直连"
-      },
-      {
-        "type": "remote",
-        "tag": "telegram_domain",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/telegram.srs",
-        "download_detour": "🎯 全球直连"
-      },
-      {
-        "type": "remote",
-        "tag": "youtube_domain",
-        "format": "binary",
-        "url": "https://ghfast.top/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/refs/heads/sing/geo-lite/geosite/youtube.srs",
+        "tag": "geosite-trackerslist",
+        "url": "https://ghfast.top/github.com/DustinWin/ruleset_geodata/raw/sing-box-ruleset/trackerslist.srs",
         "download_detour": "🎯 全球直连"
       }
     ],
@@ -447,7 +390,7 @@
     "clash_api": {
       "external_controller": "0.0.0.0:9090",
       "external_ui": "ui",
-      "external_ui_download_url": "https://ghfast.top/https://github.com/Zephyruso/zashboard/archive/gh-pages.zip",
+      "external_ui_download_url": "https://ghfast.top/github.com/Zephyruso/zashboard/archive/gh-pages.zip",
       "external_ui_download_detour": "🎯 全球直连"
     }
   }
