@@ -9,18 +9,24 @@
         "type": "https",
         "tag": "google",
         "detour": "🚀 节点选择",
-        "domain_resolver": "alidns",
+        "domain_resolver": "dnspod",
         "server": "dns.google"
       },
       {
         "type": "https",
-        "tag": "alidns",
-        "server": "223.5.5.5"
+        "tag": "dnspod",
+        "domain_resolver": "local",
+        "server": "doh.pub"
       },
       {
         "type": "tailscale",
         "tag": "taildns",
-        "endpoint": "tailnet"
+        "endpoint": "tailnet",
+        "accept_default_resolvers": true
+      },
+      {
+        "type": "local",
+        "tag": "local"
       },
       {
         "type": "fakeip",
@@ -31,47 +37,34 @@
     ],
     "rules": [
       {
-        "domain_suffix": "ts.net",
-        "server": "taildns"
-      },
-      {
-        "clash_mode": "Direct",
-        "server": "alidns"
-      },
-      {
-        "clash_mode": "Global",
-        "server": "fakeip"
-      },
-      {
         "query_type": "HTTPS",
         "action": "reject"
+      },
+      {
+        "domain_suffix": "ts.net",
+        "rule_set": "geosite_private",
+        "server": "taildns"
       },
       {
         "rule_set": "geosite_ads",
         "action": "reject"
       },
       {
-        "rule_set": [
-          "geosite_cn",
-          "geosite_fakeipfilter",
-          "geosite_private",
-          "geosite_trackerslist"
-        ],
-        "server": "alidns"
+        "rule_set": "geosite_fakeipfilter",
+        "server": "dnspod"
       },
       {
-        "type": "logical",
-        "mode": "or",
-        "rules": [
-          {
-            "rule_set": "geosite_proxy"
-          },
-          {
-            "query_type": [
-              "A",
-              "AAAA"
-            ]
-          }
+        "clash_mode": "Direct",
+        "server": "dnspod"
+      },
+      {
+        "clash_mode": "Global",
+        "server": "fakeip"
+      },
+      {
+        "query_type": [
+          "A",
+          "AAAA"
         ],
         "server": "fakeip",
         "rewrite_ttl": 1
@@ -323,7 +316,7 @@
     ],
     "final": "🐟 漏网之鱼",
     "auto_detect_interface": true,
-    "default_domain_resolver": "alidns"
+    "default_domain_resolver": "dnspod"
   },
   "experimental": {
     "cache_file": {
