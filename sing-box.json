@@ -251,7 +251,8 @@
       {
         "type": "remote",
         "tag": "geosite_ads",
-        "url": "https://ghfast.top/github.com/TG-Twilight/AWAvenue-Ads-Rule/raw/main/Filters/AWAvenue-Ads-Rule-Singbox.srs",
+        "url": "https://ghfast.top/github.com/TG-Twilight/AWAvenue-Ads-Rule/raw/main/Filters/AWAvenue-Ads-Rule-Singbox.json",
+        "format": "binary",
         "download_detour": "🎯 全球直连"
       },
       {
